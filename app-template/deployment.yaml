@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  labels: { app: myapp }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: myapp }
+  template:
+    metadata:
+      labels: { app: myapp }
+    spec:
+      containers:
+        - name: myapp
+          image: traefik/whoami:latest   # <-- replace with your image
+          ports:
+            - containerPort: 80          # <-- your app's port
+          resources:
+            requests: { cpu: 10m, memory: 32Mi }
+            limits:   { cpu: 500m, memory: 256Mi }

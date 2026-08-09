@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp
+  annotations:
+    # ---- EXPOSURE TIER: pick ONE entrypoint ----
+    # Public (internet-facing):
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    # Private (tailnet-only) — swap the line above for:
+    # traefik.ingress.kubernetes.io/router.entrypoints: tailnet
+    #
+    # ---- AUTH (optional): uncomment ONE to require login ----
+    # SSO via Authelia (recommended once you have >1 protected app):
+    # traefik.ingress.kubernetes.io/router.middlewares: security-forward-auth@kubernetescrd
+    # Simple basic-auth:
+    # traefik.ingress.kubernetes.io/router.middlewares: security-basic-auth@kubernetescrd
+    #
+    # TLS: a wildcard *.yourdomain.com cert is issued cluster-wide by Traefik's
+    # Cloudflare DNS-01 resolver, so no per-app cert config is needed for public apps.
+spec:
+  rules:
+    - host: myapp.yourdomain.com          # <-- your hostname
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myapp
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - myapp.yourdomain.com            # covered by the wildcard cert
