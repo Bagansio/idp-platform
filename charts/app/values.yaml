@@ -1,0 +1,35 @@
+# charts/app default values.
+# An app overrides only what it needs — typically name/image/subdomain/tier.
+
+# --- required per app ---
+name: ""                 # release/app name; used for Deployment/Service/Ingress names + labels
+image: ""                # container image (e.g. traefik/whoami:latest)
+
+# --- host derivation (you NEVER write a full FQDN in an app) ---
+subdomain: ""            # label only; "" => apex (host == baseDomain)
+global:
+  baseDomain: ""         # injected by the tenant (Flux postBuild.substitute). Required at render.
+
+# --- exposure tier -> entrypoint + middlewares (derived in _helpers.tpl) ---
+# public       -> websecure + ratelimit/inflight
+# public-auth  -> websecure + ratelimit/inflight + forward-auth
+# private      -> tailnet
+# private-auth -> tailnet + forward-auth
+tier: public
+
+port: 80                 # containerPort + Service targetPort
+replicas: 1
+
+resources:
+  requests: { cpu: 10m, memory: 16Mi }
+  limits:   { cpu: 500m, memory: 256Mi }
+
+extraEnv: []             # optional: [{ name: FOO, value: bar }]
+
+# --- optional static site ---
+# Two ways to serve files at /usr/share/nginx/html:
+#   site.indexHtml: "<html>..."     -> chart generates a <name>-site ConfigMap (HTML only)
+#   site.existingConfigMap: my-cm   -> chart mounts an existing ConfigMap (use for binary
+#                                       assets built by kustomize configMapGenerator)
+# Leave null for a normal (non-static-site) image.
+site: null

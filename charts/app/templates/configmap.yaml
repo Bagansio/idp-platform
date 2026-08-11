@@ -1,0 +1,15 @@
+{{/*
+Chart-generated site ConfigMap: only when inline HTML is provided AND no existing
+ConfigMap is referenced. For binary assets (images), use kustomize configMapGenerator
++ site.existingConfigMap instead — Helm values can't carry binary data cleanly.
+*/}}
+{{- if and .Values.site .Values.site.indexHtml (not .Values.site.existingConfigMap) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}-site
+  labels: { app: {{ .Values.name }} }
+data:
+  index.html: |
+{{ .Values.site.indexHtml | indent 4 }}
+{{- end }}

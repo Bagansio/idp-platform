@@ -1,0 +1,6 @@
+apiVersion: v2
+name: app
+description: Reusable single-service web app (Deployment+Service+Ingress) for the IDP. An app declares name/image/subdomain/tier; host, namespace, and Traefik annotations are derived.
+type: application
+version: 0.1.0
+appVersion: "1.0"
