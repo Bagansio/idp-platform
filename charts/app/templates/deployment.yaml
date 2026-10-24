@@ -11,6 +11,8 @@ spec:
   template:
     metadata:
       labels: { app: {{ .Values.name }} }
+      annotations:
+        bagan.io/schedule: {{ .Values.schedule | default "worker" | quote }}
     spec:
       securityContext:
         runAsNonRoot: true

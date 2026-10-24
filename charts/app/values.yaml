@@ -17,6 +17,7 @@ global:
 # private      -> tailnet
 # private-auth -> tailnet + forward-auth
 tier: public
+schedule: worker         # bagan.io/schedule. control opts onto the control plane.
 
 port: 80                 # containerPort + Service targetPort
 replicas: 1
