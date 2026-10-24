@@ -1,3 +1,4 @@
+# Pods meet the restricted Pod Security profile. The image must run as non-root.
 # charts/app default values.
 # An app overrides only what it needs — typically name/image/subdomain/tier.
 

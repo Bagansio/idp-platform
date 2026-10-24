@@ -12,9 +12,18 @@ spec:
     metadata:
       labels: { app: {{ .Values.name }} }
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.image | quote }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            runAsNonRoot: true
           ports:
             - containerPort: {{ .Values.port }}
           {{- with .Values.extraEnv }}
