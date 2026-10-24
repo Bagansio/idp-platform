@@ -6,6 +6,9 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: {{ include "app.entrypoint" . }}
     traefik.ingress.kubernetes.io/router.tls: "true"
+    {{- if not (hasPrefix "private" .Values.tier) }}
+    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
+    {{- end }}
     {{- $mw := include "app.middlewares" . }}
     {{- if $mw }}
     traefik.ingress.kubernetes.io/router.middlewares: {{ $mw }}
