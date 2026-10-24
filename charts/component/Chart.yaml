@@ -1,5 +1,0 @@
-apiVersion: v2
-name: component
-description: One list entry becomes a HelmRepository and a HelmRelease.
-type: application
-version: 0.1.0

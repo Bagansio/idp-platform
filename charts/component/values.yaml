@@ -1,5 +1,0 @@
-# Each entry is one deploy. The templates emit the Flux objects.
-# repository: a Helm repo URL. source: a GitRepository name in flux-system.
-# scheduleAt merges bagan.io/schedule into that values path. Omit it when the
-# chart already reads .Values.schedule.
-components: []
